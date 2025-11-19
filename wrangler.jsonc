@@ -1,7 +1,7 @@
 {
   // DNS Manager - Cloudflare Workers 部署配置
   // 这个Worker为PHP项目提供边缘加速和全球CDN
-  "name": "dnsmanager",
+  "name": "dnsmanager-worker",
   "main": "worker/src/index.ts",
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
