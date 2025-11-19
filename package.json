@@ -1,0 +1,36 @@
+{
+  "name": "dnsmanager",
+  "version": "1.0.0",
+  "description": "彩虹聚合DNS管理系统 - 基于ThinkPHP的多平台DNS管理系统",
+  "scripts": {
+    "worker:install": "cd worker && npm install",
+    "worker:dev": "cd worker && npm run dev",
+    "worker:deploy": "wrangler deploy",
+    "deploy": "npm run worker:deploy"
+  },
+  "keywords": [
+    "dns",
+    "manager",
+    "thinkphp",
+    "cloudflare"
+  ],
+  "author": "消失的彩虹海 (https://blog.cccyun.cn)",
+  "contributors": [
+    {
+      "name": "longzheng268",
+      "url": "https://www.lz-0315.com",
+      "role": "Cloudflare Workers Integration"
+    }
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/longzheng268/dnsmanager",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/longzheng268/dnsmanager.git"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "wrangler": "^3.86.0",
+    "typescript": "^5.7.2"
+  }
+}

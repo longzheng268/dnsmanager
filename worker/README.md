@@ -1,201 +1,53 @@
-# DNS Manager - Cloudflare Worker
+# Workers 源代码目录
 
-This directory contains the Cloudflare Worker adapter for the DNS Manager system.
+这个目录包含了为DNS Manager提供边缘加速的Cloudflare Workers代码。
 
-**原作者 (Original Author)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
-**二创作者 - Cloudflare Workers 适配 (Secondary Creator - Worker Adapter)**: longzheng268 - [个人主页](https://www.lz-0315.com)
+**注意：** Worker不是独立项目，是DNS Manager PHP项目的一个部署选项。
 
-## Features
+## 快速使用
 
-- **API Gateway**: Routes requests to your DNS Manager backend
-- **Edge Caching**: Caches responses at Cloudflare's edge for better performance
-- **Global Distribution**: Deploy your DNS Manager API globally
-- **Rate Limiting**: Built-in protection against abuse
-- **CORS Support**: Enables cross-origin requests
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [Cloudflare account](https://dash.cloudflare.com/sign-up)
-- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/)
-
-## Quick Start
-
-### 1. Install Dependencies
+在项目根目录运行：
 
 ```bash
-cd worker
+# 安装依赖
 npm install
-```
 
-### 2. Configure Wrangler
+# 配置后端地址（编辑根目录的 wrangler.jsonc）
+# 修改 BACKEND_URL 为您的PHP后端地址
 
-Edit `wrangler.toml` and set your backend URL:
-
-```toml
-[vars]
-BACKEND_URL = "https://your-dnsmanager-domain.com"
-```
-
-### 3. Deploy with Wrangler
-
-```bash
-# Login to Cloudflare (first time only)
-npx wrangler login
-
-# Deploy the worker
+# 部署
 npm run deploy
 ```
 
-Or use the wrangler command directly:
+## 完整文档
 
-```bash
-npx wrangler deploy
-```
+详细配置和使用说明请查看项目根目录的 [CLOUDFLARE_DEPLOY.md](../CLOUDFLARE_DEPLOY.md)
 
-## Development
-
-### Local Development
-
-Run the worker locally:
-
-```bash
-npm run dev
-```
-
-This will start a local server at `http://localhost:8787`
-
-### View Logs
-
-Stream real-time logs from your deployed worker:
-
-```bash
-npm run tail
-```
-
-## Configuration
-
-### Environment Variables
-
-Configure in `wrangler.toml`:
-
-```toml
-[vars]
-BACKEND_URL = "https://your-backend.com"  # Required: Your DNS Manager backend
-API_KEY = "your-secret-key"                # Optional: API authentication key
-```
-
-### KV Storage (Optional)
-
-For advanced caching, add KV namespace:
-
-```toml
-[[kv_namespaces]]
-binding = "DNS_CACHE"
-id = "your-kv-namespace-id"
-```
-
-Create KV namespace:
-
-```bash
-npx wrangler kv:namespace create "DNS_CACHE"
-```
-
-### D1 Database (Optional)
-
-For edge database support:
-
-```toml
-[[d1_databases]]
-binding = "DNS_DB"
-database_name = "dnsmanager"
-database_id = "your-d1-database-id"
-```
-
-Create D1 database:
-
-```bash
-npx wrangler d1 create dnsmanager
-```
-
-## API Endpoints
-
-### Health Check
+## 目录结构
 
 ```
-GET /health
-GET /worker/health
+worker/
+├── src/
+│   └── index.ts          # Workers入口文件（请求转发和缓存）
+├── package.json          # Workers依赖（已整合到根目录）
+├── tsconfig.json         # TypeScript配置
+└── wrangler.toml         # Workers配置（备用，优先使用根目录wrangler.jsonc）
 ```
 
-Returns worker health status.
+## 技术说明
 
-### Worker Info
+Worker的作用：
+1. **请求转发** - 将所有请求转发到PHP后端
+2. **智能缓存** - 缓存GET请求响应到边缘节点
+3. **CORS处理** - 自动处理跨域请求
+4. **IP转发** - 保留真实客户端IP
 
-```
-GET /worker/info
-```
+**不做的事：**
+- ❌ 不运行PHP代码（由后端处理）
+- ❌ 不独立存储数据（使用后端数据库）
+- ❌ 不替代后端（只是加速层）
 
-Returns worker configuration and features.
+---
 
-### Proxy Endpoints
-
-All other requests are proxied to your configured `BACKEND_URL`.
-
-## Deployment Options
-
-### Option 1: Wrangler CLI (Recommended)
-
-```bash
-npx wrangler deploy
-```
-
-### Option 2: GitHub Actions
-
-See `.github/workflows/deploy-worker.yml` for automated deployment on push.
-
-### Option 3: Cloudflare Dashboard
-
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Navigate to Workers & Pages
-3. Create a new Worker
-4. Copy the contents of `src/index.ts`
-5. Configure environment variables
-6. Deploy
-
-## Troubleshooting
-
-### Backend Connection Failed
-
-Make sure your `BACKEND_URL` is:
-- Accessible from the internet
-- Using HTTPS
-- Properly configured CORS if needed
-
-### Authentication Issues
-
-If using `API_KEY`, ensure your backend accepts the `X-Worker-API-Key` header.
-
-### Cache Not Working
-
-Check that:
-- Requests are GET methods
-- Responses are successful (200-299 status codes)
-- Cache-Control headers are properly set
-
-## Support
-
-For issues and questions:
-- [GitHub Issues](https://github.com/longzheng268/dnsmanager/issues)
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-
-## Credits
-
-**原作者 (Original Project)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
-**二创作者 - Cloudflare Workers 适配 (Secondary Creator - Worker Adapter)**: longzheng268 - [www.lz-0315.com](https://www.lz-0315.com)
-
-## License
-
-MIT - See LICENSE file in the root directory
-
-This worker adapter is a derivative work based on the original DNS Manager system.
-Both the original work and this adaptation are licensed under the MIT License.
+**原作者**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
+**Workers集成**: longzheng268 - [个人主页](https://www.lz-0315.com)

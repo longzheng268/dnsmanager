@@ -1,222 +1,217 @@
-# DNS Manager Cloudflare Workers Deployment
+# Cloudflare Workers 边缘加速部署
 
-**原作者 (Original Author)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
-**二创作者 - Cloudflare Workers 适配 (Secondary Creator - Worker Adapter)**: longzheng268 - [个人主页](https://www.lz-0315.com)
+**原作者**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
+**Workers集成**: longzheng268 - [个人主页](https://www.lz-0315.com)
 
 ---
 
-## One-Click Deploy to Cloudflare Workers
+## 什么是Workers边缘加速？
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/longzheng268/dnsmanager)
+Cloudflare Workers为您的DNS Manager PHP项目提供**全球边缘加速**，让全球用户都能快速访问您的系统。
 
-## Manual Deployment Steps
-
-### Prerequisites
-
-1. A [Cloudflare account](https://dash.cloudflare.com/sign-up)
-2. [Node.js](https://nodejs.org/) v18+ installed
-3. Your DNS Manager backend deployed and accessible
-
-### Step 1: Install Wrangler
-
-```bash
-npm install -g wrangler
+**工作原理：**
+```
+用户 → Cloudflare全球边缘节点(Workers) → 您的PHP后端 → 响应缓存到边缘 → 用户
 ```
 
-Or use with npx:
+**优势：**
+- ⚡ 全球200+数据中心，就近访问
+- 🚀 智能缓存，重复请求秒级响应
+- 🔒 自动DDoS防护
+- 💰 免费套餐每天10万请求
+
+---
+
+## 快速开始
+
+## 快速开始
+
+### 前提条件
+
+1. 已部署好DNS Manager PHP项目（VPS、云服务器、Docker等）
+2. 拥有 [Cloudflare账号](https://dash.cloudflare.com/sign-up)
+3. 已安装 [Node.js](https://nodejs.org/) v18+
+
+### 步骤1：安装依赖
+
+在项目根目录运行：
 
 ```bash
-npx wrangler --version
-```
-
-### Step 2: Login to Cloudflare
-
-```bash
-wrangler login
-```
-
-This will open your browser to authenticate with Cloudflare.
-
-### Step 3: Clone and Configure
-
-```bash
-# Navigate to worker directory
-cd worker
-
-# Install dependencies
 npm install
-
-# Edit wrangler.toml and set your BACKEND_URL
-nano wrangler.toml
 ```
 
-Update the `BACKEND_URL` variable:
+### 步骤2：配置后端地址
 
-```toml
-[vars]
-BACKEND_URL = "https://your-dnsmanager-backend.com"
+编辑项目根目录的 `wrangler.jsonc` 文件：
+
+```jsonc
+{
+  "name": "dnsmanager",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2024-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  
+  "vars": {
+    "BACKEND_URL": "https://your-actual-backend.com"  // ← 修改这里
+  }
+}
 ```
 
-### Step 4: Deploy
+将 `BACKEND_URL` 改为您实际的PHP后端地址。
+
+### 步骤3：一键部署
 
 ```bash
-# Deploy to Cloudflare (from repository root)
-npx wrangler deploy
+# 首次使用需要登录Cloudflare
+npx wrangler login
 
-# Or from worker directory
-cd worker
-npm run deploy
-
-# Or use wrangler directly in worker directory
-wrangler deploy
-```
-
-**Note:** The repository includes a `wrangler.jsonc` file at the root level that configures the worker for deployment. You can deploy from either the root directory or the `worker/` subdirectory.
-
-### Step 5: Test Your Deployment
-
-```bash
-# Your worker will be available at:
-# https://dnsmanager-worker.YOUR_SUBDOMAIN.workers.dev
-
-# Test the health endpoint
-curl https://dnsmanager-worker.YOUR_SUBDOMAIN.workers.dev/health
-```
-
-## Configuration Options
-
-### Configuration Files
-
-This project includes two wrangler configuration files:
-
-1. **`wrangler.jsonc`** (root level) - Used for deployment from repository root
-   - Points to `worker/src/index.ts` as the entry point
-   - Used by automated deployment systems (GitHub Actions, Cloudflare Pages)
-
-2. **`worker/wrangler.toml`** (worker directory) - Used for deployment from worker directory
-   - Traditional wrangler configuration format
-   - Useful for local development and manual deployment
-
-Both files should be kept in sync for environment variables and configuration settings.
-
-### Environment Variables
-
-Set in `wrangler.toml` under `[vars]`:
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `BACKEND_URL` | Yes | Your DNS Manager backend URL |
-| `API_KEY` | No | Optional API key for authentication |
-
-### Custom Domain
-
-To use a custom domain:
-
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. Navigate to Workers & Pages
-3. Select your worker
-4. Click "Triggers" tab
-5. Add a custom domain
-
-### Secrets
-
-For sensitive data (like API keys), use secrets instead of vars:
-
-```bash
-# Set a secret
-wrangler secret put API_KEY
-
-# List secrets
-wrangler secret list
-
-# Delete a secret
-wrangler secret delete API_KEY
-```
-
-## GitHub Actions Deployment
-
-This repository includes automated deployment via GitHub Actions.
-
-### Setup
-
-1. Get your Cloudflare API Token:
-   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/profile/api-tokens)
-   - Create Token -> Use "Edit Cloudflare Workers" template
-   - Copy the token
-
-2. Add to GitHub Secrets:
-   - Go to your repository Settings -> Secrets and variables -> Actions
-   - Add new secret: `CLOUDFLARE_API_TOKEN`
-   - Paste your API token
-
-3. Push changes to trigger deployment:
-   ```bash
-   git push origin main
-   ```
-
-The worker will automatically deploy on every push to the `main` branch that modifies files in the `worker/` directory.
-
-## Updating Your Worker
-
-To update your deployed worker:
-
-```bash
-cd worker
+# 部署Workers
 npm run deploy
 ```
 
-Or push changes to GitHub if you've set up GitHub Actions.
+完成！您的DNS Manager现在拥有全球边缘加速了。
 
-## Monitoring
+---
 
-### View Logs
+## 配置说明
 
-Stream real-time logs:
+### 核心配置
+
+在 `wrangler.jsonc` 中配置：
+
+| 配置项 | 必需 | 说明 |
+|--------|------|------|
+| `BACKEND_URL` | 是 | 您的PHP项目实际部署地址，如 `https://dns.example.com` |
+
+### 高级配置（可选）
+
+```jsonc
+{
+  // ... 基础配置 ...
+  
+  // 自定义域名
+  "routes": [
+    {
+      "pattern": "dns.yourdomain.com/*",
+      "zone_name": "yourdomain.com"
+    }
+  ],
+  
+  // KV缓存（提升性能）
+  "kv_namespaces": [
+    {
+      "binding": "DNS_CACHE",
+      "id": "your-kv-id"
+    }
+  ]
+}
+```
+
+---
+
+## 使用自定义域名
+
+1. 在Cloudflare添加您的域名
+2. 在 `wrangler.jsonc` 中配置routes
+3. 重新部署：`npm run deploy`
+
+或者通过Cloudflare Dashboard配置：
+1. 进入 [Workers & Pages](https://dash.cloudflare.com)
+2. 选择您的Worker
+3. 点击 "Triggers" → "Add Custom Domain"
+
+---
+
+## 本地开发测试
 
 ```bash
-cd worker
-npm run tail
+# 启动本地开发服务器
+npm run worker:dev
+
+# 访问 http://localhost:8787 测试
 ```
 
-### Analytics
+---
 
-View analytics in Cloudflare Dashboard:
-1. Go to Workers & Pages
-2. Select your worker
-3. Check the "Metrics" tab
+## 监控和日志
 
-## Troubleshooting
+### 查看实时日志
 
-### "Backend URL not configured"
-
-Make sure `BACKEND_URL` is set in `wrangler.toml`:
-
-```toml
-[vars]
-BACKEND_URL = "https://your-backend.com"
-```
-
-### "Authentication failed"
-
-Run `wrangler login` again to re-authenticate.
-
-### Worker not updating
-
-Try:
 ```bash
-wrangler deploy --force
+npx wrangler tail
 ```
 
-### Need Help?
+### 查看分析数据
 
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Wrangler CLI Documentation](https://developers.cloudflare.com/workers/wrangler/)
-- [GitHub Issues](https://github.com/longzheng268/dnsmanager/issues)
+访问 [Cloudflare Dashboard](https://dash.cloudflare.com) → Workers & Pages → 选择您的Worker → Metrics
 
-## Cost
+---
 
-Cloudflare Workers free tier includes:
-- 100,000 requests per day
-- 10ms CPU time per request
+## 常见问题
 
-For higher usage, check [Cloudflare Workers Pricing](https://developers.cloudflare.com/workers/platform/pricing/).
+### Worker无法连接到后端
+
+**检查：**
+1. BACKEND_URL是否正确（包括https://）
+2. 后端服务器是否正常运行
+3. 后端是否允许Cloudflare IP访问
+
+### 如何更新Worker
+
+修改配置后重新运行：
+```bash
+npm run deploy
+```
+
+### 如何删除Worker
+
+```bash
+npx wrangler delete
+```
+
+---
+
+## 架构说明
+
+```
+┌─────────┐     请求      ┌──────────────────┐     转发      ┌─────────────┐
+│  用户   │ ────────────> │ Cloudflare Edge  │ ───────────> │  PHP后端    │
+│         │               │    (Workers)     │              │ (ThinkPHP)  │
+└─────────┘  <──────────  └──────────────────┘  <─────────  └─────────────┘
+              缓存响应           智能缓存                      原始数据
+```
+
+**关键点：**
+- Worker不是独立系统，是PHP项目的加速层
+- 所有逻辑仍在PHP后端运行
+- Worker只负责请求转发和缓存
+
+---
+
+## 费用说明
+
+**Cloudflare Workers 免费套餐：**
+- 每天 100,000 次请求
+- 每次请求 10ms CPU时间
+- 对大多数个人和小型项目足够
+
+超出限制：$5/月，包含1000万请求
+
+详见 [Cloudflare Workers定价](https://developers.cloudflare.com/workers/platform/pricing/)
+
+---
+
+## 技术支持
+
+- **GitHub Issues**: [提交问题](https://github.com/longzheng268/dnsmanager/issues)
+- **原项目**: [netcccyun/dnsmgr](https://github.com/netcccyun/dnsmgr)
+- **Cloudflare文档**: [Workers Documentation](https://developers.cloudflare.com/workers/)
+
+---
+
+## 许可证
+
+本项目遵循 Apache-2.0 License
+
+Workers集成部分由 longzheng268 开发，作为DNS Manager项目的部署选项提供。

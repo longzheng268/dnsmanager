@@ -1,21 +1,22 @@
 /**
- * DNS Manager - Cloudflare Worker
+ * DNS Manager - Cloudflare Workers 边缘加速
  * 
- * Original work: 彩虹聚合DNS管理系统
+ * 原项目: 彩虹聚合DNS管理系统
  * Copyright (c) 2024 消失的彩虹海 (https://blog.cccyun.cn)
- * Licensed under MIT License
+ * Licensed under Apache-2.0 License
  * 
- * Cloudflare Worker Adapter (Derivative Work)
+ * Cloudflare Workers 边缘加速集成
  * Copyright (c) 2024 longzheng268 (https://www.lz-0315.com)
  * 
- * This adapter provides edge computing capabilities for the DNS Manager system.
+ * 本Worker为DNS Manager PHP项目提供全球边缘加速服务
  * 
- * This worker acts as an API gateway and edge proxy for the DNS Manager system.
- * It provides:
- * - API request routing and proxying
- * - Edge caching for improved performance
- * - Rate limiting and security
- * - CORS handling
+ * 功能：
+ * - 请求转发：将所有请求代理到PHP后端
+ * - 智能缓存：缓存GET请求到全球边缘节点
+ * - CORS处理：自动处理跨域请求
+ * - IP转发：保留真实客户端IP
+ * 
+ * 注意：Worker不运行PHP代码，所有业务逻辑在后端PHP项目中处理
  */
 
 export interface Env {
@@ -342,15 +343,15 @@ function getSetupGuidePage(): Response {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🚀 DNS Manager Worker</h1>
-      <p>Cloudflare Workers Edge Computing</p>
+      <h1>🚀 DNS Manager 边缘加速</h1>
+      <p>为您的PHP项目启用全球加速 / Global Edge Acceleration for Your PHP Project</p>
     </div>
     
     <div class="content">
       <div class="status">
-        <h2>⚠️ 配置需要完成 / Configuration Required</h2>
-        <p>Worker 已成功部署，但需要配置后端地址才能正常使用。<br>
-        The worker is successfully deployed, but requires backend URL configuration to function properly.</p>
+        <h2>⚠️ 需要配置PHP后端地址 / Backend Configuration Required</h2>
+        <p>Workers边缘加速已部署，但需要配置您的PHP项目后端地址才能使用。<br>
+        The edge acceleration is deployed, but requires your PHP backend URL configuration to function.</p>
       </div>
 
       <div class="section">
@@ -358,23 +359,28 @@ function getSetupGuidePage(): Response {
         <ol class="steps">
           <li class="step">
             <span class="step-number">1</span>
-            <h4>编辑配置文件</h4>
-            <p>在您的项目中找到 <code>wrangler.toml</code> 文件，添加或修改以下内容：</p>
-            <div class="code-block">[vars]<br><code>BACKEND_URL = "https://your-dnsmanager.example.com"</code></div>
-            <p>将 URL 替换为您的 DNS Manager 后端实际地址。</p>
+            <h4>部署PHP项目</h4>
+            <p>首先，将DNS Manager PHP项目部署到服务器（VPS、云服务器、宝塔面板等）。</p>
+            <p>确保PHP项目可以通过URL访问，例如：<code>https://dns.example.com</code></p>
           </li>
           <li class="step">
             <span class="step-number">2</span>
-            <h4>重新部署 Worker</h4>
-            <p>在项目目录中运行以下命令：</p>
-            <div class="code-block">cd worker<br>npm run deploy</div>
-            <p>或者使用 wrangler 命令：</p>
-            <div class="code-block">npx wrangler deploy</div>
+            <h4>配置后端地址</h4>
+            <p>在项目根目录找到 <code>wrangler.jsonc</code> 文件，修改配置：</p>
+            <div class="code-block">
+{<br>
+  "vars": {<br>
+    <code>"BACKEND_URL": "https://dns.example.com"</code>  // 改为您的实际地址<br>
+  }<br>
+}
+            </div>
           </li>
           <li class="step">
             <span class="step-number">3</span>
-            <h4>验证配置</h4>
-            <p>部署完成后，刷新此页面，如果配置正确，您将看到欢迎页面。</p>
+            <h4>重新部署Workers</h4>
+            <p>在项目根目录运行：</p>
+            <div class="code-block">npm run deploy</div>
+            <p>部署完成后，全球用户将通过Cloudflare边缘节点快速访问您的DNS Manager。</p>
           </li>
         </ol>
       </div>
@@ -384,23 +390,28 @@ function getSetupGuidePage(): Response {
         <ol class="steps">
           <li class="step">
             <span class="step-number">1</span>
-            <h4>Edit Configuration File</h4>
-            <p>Locate the <code>wrangler.toml</code> file in your project and add or modify:</p>
-            <div class="code-block">[vars]<br><code>BACKEND_URL = "https://your-dnsmanager.example.com"</code></div>
-            <p>Replace the URL with your actual DNS Manager backend address.</p>
+            <h4>Deploy PHP Project</h4>
+            <p>First, deploy the DNS Manager PHP project to your server (VPS, cloud server, control panel, etc.).</p>
+            <p>Ensure the PHP project is accessible via URL, e.g., <code>https://dns.example.com</code></p>
           </li>
           <li class="step">
             <span class="step-number">2</span>
-            <h4>Redeploy the Worker</h4>
-            <p>Run the following command in your project directory:</p>
-            <div class="code-block">cd worker<br>npm run deploy</div>
-            <p>Or use wrangler directly:</p>
-            <div class="code-block">npx wrangler deploy</div>
+            <h4>Configure Backend URL</h4>
+            <p>Find <code>wrangler.jsonc</code> in the project root and modify:</p>
+            <div class="code-block">
+{<br>
+  "vars": {<br>
+    <code>"BACKEND_URL": "https://dns.example.com"</code>  // Change to your actual URL<br>
+  }<br>
+}
+            </div>
           </li>
           <li class="step">
             <span class="step-number">3</span>
-            <h4>Verify Configuration</h4>
-            <p>After deployment, refresh this page. If configured correctly, you'll see the welcome page.</p>
+            <h4>Redeploy Workers</h4>
+            <p>Run in the project root:</p>
+            <div class="code-block">npm run deploy</div>
+            <p>After deployment, global users will access your DNS Manager through Cloudflare edge nodes.</p>
           </li>
         </ol>
       </div>
@@ -412,8 +423,8 @@ function getSetupGuidePage(): Response {
     </div>
 
     <div class="footer">
-      <p>原作者 Original Author: <a href="https://blog.cccyun.cn" target="_blank">消失的彩虹海</a></p>
-      <p>Worker 适配 Worker Adapter: <a href="https://www.lz-0315.com" target="_blank">longzheng268</a></p>
+      <p>PHP项目原作者 Original Author: <a href="https://blog.cccyun.cn" target="_blank">消失的彩虹海</a></p>
+      <p>边缘加速集成 Edge Acceleration: <a href="https://www.lz-0315.com" target="_blank">longzheng268</a></p>
       <p style="margin-top: 10px;">Powered by Cloudflare Workers ⚡</p>
     </div>
   </div>
@@ -600,55 +611,55 @@ function getWelcomePage(env: Env): Response {
 <body>
   <div class="container">
     <div class="header">
-      <h1>✨ DNS Manager Worker</h1>
-      <p>边缘计算已就绪 / Edge Computing Ready</p>
+      <h1>✨ DNS Manager 边缘加速已启用</h1>
+      <p>您的PHP项目已连接全球加速网络 / Your PHP Project is Connected to Global Edge Network</p>
     </div>
     
     <div class="content">
       <div class="status">
-        <h2>Worker 正在运行中</h2>
-        <p>您的 DNS Manager Worker 已成功配置并正在运行。所有 API 请求将被代理到后端服务器。<br>
-        Your DNS Manager Worker is successfully configured and running. All API requests will be proxied to the backend server.</p>
+        <h2>边缘加速正常运行</h2>
+        <p>您的 DNS Manager 已启用 Cloudflare 边缘加速。全球用户将通过就近的边缘节点访问您的系统。<br>
+        Your DNS Manager is accelerated by Cloudflare edge network. Global users will access through nearby edge nodes.</p>
       </div>
 
       <div class="info-grid">
         <div class="info-card">
-          <h3>Worker 版本 / Version</h3>
-          <p>1.0.0</p>
+          <h3>加速状态 / Status</h3>
+          <p>🟢 运行中 / Active</p>
         </div>
         <div class="info-card">
-          <h3>后端地址 / Backend URL</h3>
+          <h3>PHP后端 / Backend</h3>
           <p>${env.BACKEND_URL}</p>
         </div>
         <div class="info-card">
-          <h3>状态 / Status</h3>
-          <p>🟢 运行中 / Running</p>
+          <h3>边缘节点 / Edge Nodes</h3>
+          <p>🌍 全球200+ / 200+ Worldwide</p>
         </div>
         <div class="info-card">
-          <h3>功能 / Features</h3>
-          <p>缓存${env.DNS_CACHE ? '✓' : '✗'} | 数据库${env.DNS_DB ? '✓' : '✗'}</p>
+          <h3>缓存 / Caching</h3>
+          <p>${env.DNS_CACHE ? '✓ 已启用 / Enabled' : '○ 基础 / Basic'}</p>
         </div>
       </div>
 
       <div class="section">
-        <h3>✨ 功能特性 / Features</h3>
+        <h3>✨ 加速特性 / Edge Features</h3>
         <ul class="feature-list">
-          <li>API 请求智能路由和代理 / Intelligent API routing and proxying</li>
-          <li>边缘缓存提升性能 / Edge caching for improved performance</li>
-          <li>自动 CORS 处理 / Automatic CORS handling</li>
-          <li>全球边缘节点加速 / Global edge node acceleration</li>
-          <li>请求头转发和处理 / Request header forwarding and processing</li>
+          <li>智能请求路由到PHP后端 / Smart routing to PHP backend</li>
+          <li>GET请求边缘缓存 / Edge caching for GET requests</li>
+          <li>自动CORS跨域处理 / Automatic CORS handling</li>
+          <li>真实IP地址转发 / Real IP forwarding</li>
+          <li>全球低延迟访问 / Global low-latency access</li>
         </ul>
       </div>
 
       <div class="section">
-        <h3>📚 快速开始 / Quick Start</h3>
+        <h3>📚 使用说明 / How to Use</h3>
         <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
-          要使用 DNS Manager 系统，请访问后端地址或使用 API 端点。此 Worker 会自动将请求代理到后端服务器。<br>
-          To use the DNS Manager system, visit the backend URL or use API endpoints. This worker automatically proxies requests to the backend server.
+          现在直接访问此Workers域名即可使用DNS Manager系统，所有请求会自动转发到PHP后端。<br>
+          Simply access this Workers domain to use DNS Manager. All requests are automatically forwarded to the PHP backend.
         </p>
         <div class="links">
-          <a href="${env.BACKEND_URL}" class="link-button" target="_blank">🌐 访问后端 / Visit Backend</a>
+          <a href="${env.BACKEND_URL}" class="link-button" target="_blank">🌐 访问PHP后端 / Visit PHP Backend</a>
           <a href="/health" class="link-button" target="_blank">🔍 健康检查 / Health Check</a>
           <a href="https://github.com/longzheng268/dnsmanager" class="link-button" target="_blank">💻 GitHub</a>
         </div>
@@ -656,8 +667,8 @@ function getWelcomePage(env: Env): Response {
     </div>
 
     <div class="footer">
-      <p>原作者 Original Author: <a href="https://blog.cccyun.cn" target="_blank">消失的彩虹海</a></p>
-      <p>Worker 适配 Worker Adapter: <a href="https://www.lz-0315.com" target="_blank">longzheng268</a></p>
+      <p>PHP项目原作者 Original Author: <a href="https://blog.cccyun.cn" target="_blank">消失的彩虹海</a></p>
+      <p>边缘加速集成 Edge Acceleration: <a href="https://www.lz-0315.com" target="_blank">longzheng268</a></p>
       <p style="margin-top: 10px;">Powered by Cloudflare Workers ⚡</p>
     </div>
   </div>
