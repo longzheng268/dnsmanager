@@ -226,14 +226,9 @@ SSL证书自动部署功能
 
 ## 支持与反馈
 
-🌐 **原作者** (Original Author): 消失的彩虹海 (https://blog.cccyun.cn)
+🌐 **原作者** (Original Author): 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)
 
-☁️ **Cloudflare Workers 适配** (Worker Adapter): longzheng268 (https://www.lz-0315.com)
+☁️ **二创作者 - Cloudflare Workers 适配** (Secondary Creator - Worker Adapter): longzheng268 - [个人主页](https://www.lz-0315.com)
 
 ⭐ 如果您觉得本项目对您有帮助，欢迎给项目点个 Star
-
-### 其他推荐
-
-- [彩虹云主机 - 免备案CDN/虚拟主机](https://www.cccyun.net/)
-- [小白云高防云服务器](https://www.xiaobaiyun.cn/aff/GMLPMFOV)
 
