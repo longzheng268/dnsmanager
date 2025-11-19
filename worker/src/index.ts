@@ -72,32 +72,25 @@ export default {
 
     // If backend URL is not configured, return setup instructions
     if (!env.BACKEND_URL) {
-      if (url.pathname === '/' || url.pathname === '/worker') {
-        return new Response(JSON.stringify({
-          message: 'DNS Manager Worker is running',
-          setup_required: true,
-          instructions: {
-            step1: 'Configure BACKEND_URL environment variable in wrangler.toml',
-            step2: 'Point BACKEND_URL to your DNS Manager PHP backend',
-            step3: 'Redeploy the worker using: wrangler deploy',
-            example: 'BACKEND_URL = "https://your-dnsmanager.example.com"'
-          },
-          documentation: 'https://github.com/longzheng268/dnsmanager#cloudflare-workers-deployment'
-        }), {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-      }
+      return new Response(JSON.stringify({
+        message: 'DNS Manager Worker is running',
+        setup_required: true,
+        instructions: {
+          step1: 'Configure BACKEND_URL environment variable in wrangler.toml',
+          step2: 'Point BACKEND_URL to your DNS Manager PHP backend',
+          step3: 'Redeploy the worker using: wrangler deploy',
+          example: 'BACKEND_URL = "https://your-dnsmanager.example.com"'
+        },
+        documentation: 'https://github.com/longzheng268/dnsmanager#cloudflare-workers-deployment'
+      }), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     }
 
     // Proxy all other requests to backend
-    if (env.BACKEND_URL) {
-      return handleProxy(request, env);
-    }
-
-    // Fallback 404
-    return new Response('Not Found', { status: 404 });
+    return handleProxy(request, env);
   }
 };
 
