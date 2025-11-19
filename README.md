@@ -226,7 +226,9 @@ SSL证书自动部署功能
 
 ## 支持与反馈
 
-🌐 作者信息：消失的彩虹海(https://blog.cccyun.cn)
+🌐 **原作者** (Original Author): 消失的彩虹海 (https://blog.cccyun.cn)
+
+☁️ **Cloudflare Workers 适配** (Worker Adapter): longzheng268 (https://www.lz-0315.com)
 
 ⭐ 如果您觉得本项目对您有帮助，欢迎给项目点个 Star
 

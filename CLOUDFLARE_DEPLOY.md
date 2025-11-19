@@ -1,5 +1,10 @@
 # DNS Manager Cloudflare Workers Deployment
 
+**原作者 (Original Author)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
+**Cloudflare Workers 一键部署 (One-Click Deployment)**: longzheng268 - [www.lz-0315.com](https://www.lz-0315.com)
+
+---
+
 ## One-Click Deploy to Cloudflare Workers
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/longzheng268/dnsmanager)

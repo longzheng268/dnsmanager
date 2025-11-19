@@ -2,6 +2,9 @@
 
 This directory contains the Cloudflare Worker adapter for the DNS Manager system.
 
+**原作者 (Original Author)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
+**Cloudflare Workers 适配 (Worker Adapter)**: longzheng268 - [个人主页](https://www.lz-0315.com)
+
 ## Features
 
 - **API Gateway**: Routes requests to your DNS Manager backend
@@ -185,6 +188,14 @@ For issues and questions:
 - [GitHub Issues](https://github.com/longzheng268/dnsmanager/issues)
 - [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
 
+## Credits
+
+**原作者 (Original Project)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
+**Cloudflare Workers 适配 (Worker Adapter)**: longzheng268 - [www.lz-0315.com](https://www.lz-0315.com)
+
 ## License
 
-Apache-2.0 - See LICENSE file in the root directory
+MIT - See LICENSE file in the root directory
+
+This worker adapter is a derivative work based on the original DNS Manager system.
+Both the original work and this adaptation are licensed under the MIT License.

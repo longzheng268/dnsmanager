@@ -1,7 +1,7 @@
 {
   "name": "dnsmanager-worker",
   "version": "1.0.0",
-  "description": "Cloudflare Worker for DNS Manager",
+  "description": "Cloudflare Worker for DNS Manager - Edge computing adapter",
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
@@ -15,8 +15,15 @@
     "dns",
     "api"
   ],
-  "author": "DNS Manager Contributors",
-  "license": "Apache-2.0",
+  "author": "longzheng268 (https://www.lz-0315.com)",
+  "contributors": [
+    {
+      "name": "消失的彩虹海",
+      "url": "https://blog.cccyun.cn"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/longzheng268/dnsmanager",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241127.0",
     "wrangler": "^3.86.0",

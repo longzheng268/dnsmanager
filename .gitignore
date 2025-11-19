@@ -3,3 +3,8 @@
 /vendor
 *.log
 .env
+
+# Worker dependencies
+/worker/node_modules
+/worker/package-lock.json
+/worker/.wrangler

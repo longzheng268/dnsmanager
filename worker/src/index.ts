@@ -1,6 +1,15 @@
 /**
  * DNS Manager - Cloudflare Worker
  * 
+ * Original work: 彩虹聚合DNS管理系统
+ * Copyright (c) 2024 消失的彩虹海 (https://blog.cccyun.cn)
+ * Licensed under MIT License
+ * 
+ * Cloudflare Worker Adapter (Derivative Work)
+ * Copyright (c) 2024 longzheng268 (https://www.lz-0315.com)
+ * 
+ * This adapter provides edge computing capabilities for the DNS Manager system.
+ * 
  * This worker acts as an API gateway and edge proxy for the DNS Manager system.
  * It provides:
  * - API request routing and proxying
