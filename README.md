@@ -8,6 +8,8 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/netcccyun/dnsmgr)](https://github.com/netcccyun/dnsmgr/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/netcccyun/dnsmgr)](https://github.com/netcccyun/dnsmgr/commits/main)
 
+[![Deploy to Cloudflare Workers](https://img.shields.io/badge/Deploy%20to-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](./CLOUDFLARE_DEPLOY.md)
+
 </div>
 
 彩虹聚合DNS管理系统 是一款基于ThinkPHP开发的网站程序，可实现在单一网站内管理多个平台的域名解析，目前已支持的域名解析平台有：阿里云、腾讯云、华为云、百度云、西部数码、火山引擎、DNSLA、CloudFlare、Namesilo、PowerDNS
@@ -23,6 +25,36 @@
 - 支持邮件、微信公众号、Telegram、钉钉、飞书、企业微信等多种通知渠道。
 
 ## 部署方式
+
+### Cloudflare Workers 部署 ⚡
+
+快速部署到 Cloudflare Workers，实现全球加速和边缘计算：
+
+[![Deploy to Cloudflare Workers](https://img.shields.io/badge/Deploy%20to-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](./CLOUDFLARE_DEPLOY.md)
+
+**特点：**
+- ⚡ 全球边缘节点部署
+- 🚀 超快响应速度
+- 🔒 内置安全防护
+- 💰 免费套餐可用
+
+**快速开始：**
+
+```bash
+# 进入 worker 目录
+cd worker
+
+# 安装依赖
+npm install
+
+# 配置后端地址（编辑 wrangler.toml）
+# BACKEND_URL = "https://your-dnsmanager.com"
+
+# 部署到 Cloudflare
+npm run deploy
+```
+
+详细说明请查看 [Cloudflare Workers 部署文档](./CLOUDFLARE_DEPLOY.md)
 
 ### 自部署
 
@@ -197,10 +229,6 @@ SSL证书自动部署功能
 🌐 作者信息：消失的彩虹海(https://blog.cccyun.cn)
 
 ⭐ 如果您觉得本项目对您有帮助，欢迎给项目点个 Star
-
-🤝 捐赠：
-
-<img height="240" src="https://wkphoto.bj.bcebos.com/d8f9d72a6059252db065f556249b033b5bb5b976.jpg">
 
 ### 其他推荐
 

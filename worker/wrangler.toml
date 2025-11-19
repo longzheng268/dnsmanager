@@ -1,0 +1,23 @@
+name = "dnsmanager-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Workers configuration
+workers_dev = true
+
+# Environment variables (to be configured during deployment)
+[vars]
+# BACKEND_URL = "https://your-backend-domain.com"
+# API_KEY = "your-api-key"
+
+# KV namespace bindings (optional, for caching)
+# [[kv_namespaces]]
+# binding = "DNS_CACHE"
+# id = "your-kv-namespace-id"
+
+# D1 database binding (optional, for edge database)
+# [[d1_databases]]
+# binding = "DNS_DB"
+# database_name = "dnsmanager"
+# database_id = "your-d1-database-id"
