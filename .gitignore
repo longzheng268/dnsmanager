@@ -4,7 +4,8 @@
 *.log
 .env
 
-# Worker dependencies
+# Worker dependencies and build artifacts
 /worker/node_modules
 /worker/package-lock.json
 /worker/.wrangler
+/.wrangler
