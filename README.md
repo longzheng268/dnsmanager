@@ -26,35 +26,37 @@
 
 ## 部署方式
 
-### Cloudflare Workers 部署 ⚡
+### Cloudflare Workers 边缘加速 ⚡
 
-快速部署到 Cloudflare Workers，实现全球加速和边缘计算：
-
-[![Deploy to Cloudflare Workers](https://img.shields.io/badge/Deploy%20to-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](./CLOUDFLARE_DEPLOY.md)
+为您的DNS Manager添加全球边缘加速，提升访问速度：
 
 **特点：**
-- ⚡ 全球边缘节点部署
-- 🚀 超快响应速度
-- 🔒 内置安全防护
-- 💰 免费套餐可用
+- ⚡ 全球边缘节点，低延迟访问
+- 🚀 智能缓存，超快响应速度
+- 🔒 内置DDoS防护
+- 💰 免费套餐每天10万次请求
 
-**快速开始：**
+**使用场景：**
+1. 将PHP后端部署在VPS/云服务器
+2. 使用Workers作为CDN加速层
+3. 全球用户获得更快的访问速度
+
+**快速部署：**
 
 ```bash
-# 进入 worker 目录
-cd worker
-
-# 安装依赖
+# 1. 安装依赖
 npm install
 
-# 配置后端地址（编辑 wrangler.toml）
-# BACKEND_URL = "https://your-dnsmanager.com"
+# 2. 配置后端地址（编辑 wrangler.jsonc）
+# 修改 BACKEND_URL 为您的PHP后端地址
 
-# 部署到 Cloudflare
+# 3. 一键部署
 npm run deploy
 ```
 
-详细说明请查看 [Cloudflare Workers 部署文档](./CLOUDFLARE_DEPLOY.md)
+Worker会自动代理所有请求到您的PHP后端，并提供边缘缓存加速。
+
+详细配置请查看 [Cloudflare Workers 部署文档](./CLOUDFLARE_DEPLOY.md)
 
 ### 自部署
 
