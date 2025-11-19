@@ -3,7 +3,7 @@
 This directory contains the Cloudflare Worker adapter for the DNS Manager system.
 
 **原作者 (Original Author)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
-**Cloudflare Workers 适配 (Worker Adapter)**: longzheng268 - [个人主页](https://www.lz-0315.com)
+**二创作者 - Cloudflare Workers 适配 (Secondary Creator - Worker Adapter)**: longzheng268 - [个人主页](https://www.lz-0315.com)
 
 ## Features
 
@@ -191,7 +191,7 @@ For issues and questions:
 ## Credits
 
 **原作者 (Original Project)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
-**Cloudflare Workers 适配 (Worker Adapter)**: longzheng268 - [www.lz-0315.com](https://www.lz-0315.com)
+**二创作者 - Cloudflare Workers 适配 (Secondary Creator - Worker Adapter)**: longzheng268 - [www.lz-0315.com](https://www.lz-0315.com)
 
 ## License
 
