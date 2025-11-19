@@ -1,7 +1,7 @@
 # DNS Manager Cloudflare Workers Deployment
 
 **原作者 (Original Author)**: 消失的彩虹海 - [彩虹聚合DNS管理系统](https://blog.cccyun.cn)  
-**Cloudflare Workers 一键部署 (One-Click Deployment)**: longzheng268 - [www.lz-0315.com](https://www.lz-0315.com)
+**二创作者 - Cloudflare Workers 适配 (Secondary Creator - Worker Adapter)**: longzheng268 - [个人主页](https://www.lz-0315.com)
 
 ---
 
@@ -60,12 +60,18 @@ BACKEND_URL = "https://your-dnsmanager-backend.com"
 ### Step 4: Deploy
 
 ```bash
-# Deploy to Cloudflare
+# Deploy to Cloudflare (from repository root)
+npx wrangler deploy
+
+# Or from worker directory
+cd worker
 npm run deploy
 
-# Or use wrangler directly
+# Or use wrangler directly in worker directory
 wrangler deploy
 ```
+
+**Note:** The repository includes a `wrangler.jsonc` file at the root level that configures the worker for deployment. You can deploy from either the root directory or the `worker/` subdirectory.
 
 ### Step 5: Test Your Deployment
 
@@ -78,6 +84,20 @@ curl https://dnsmanager-worker.YOUR_SUBDOMAIN.workers.dev/health
 ```
 
 ## Configuration Options
+
+### Configuration Files
+
+This project includes two wrangler configuration files:
+
+1. **`wrangler.jsonc`** (root level) - Used for deployment from repository root
+   - Points to `worker/src/index.ts` as the entry point
+   - Used by automated deployment systems (GitHub Actions, Cloudflare Pages)
+
+2. **`worker/wrangler.toml`** (worker directory) - Used for deployment from worker directory
+   - Traditional wrangler configuration format
+   - Useful for local development and manual deployment
+
+Both files should be kept in sync for environment variables and configuration settings.
 
 ### Environment Variables
 
