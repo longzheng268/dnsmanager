@@ -1,0 +1,56 @@
+name: Deploy Worker to Cloudflare
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'worker/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Workers
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: worker/package.json
+
+      - name: Install dependencies
+        working-directory: worker
+        run: npm ci
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: worker
+          command: deploy
+
+      - name: Deployment Summary
+        run: |
+          echo "### 🚀 Worker Deployed Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The DNS Manager Worker has been deployed to Cloudflare." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next Steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. Configure your BACKEND_URL in Cloudflare Dashboard" >> $GITHUB_STEP_SUMMARY
+          echo "2. Set up your custom domain (optional)" >> $GITHUB_STEP_SUMMARY
+          echo "3. Test the worker endpoints" >> $GITHUB_STEP_SUMMARY
